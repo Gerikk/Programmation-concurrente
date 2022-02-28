@@ -3,11 +3,11 @@ package fr.bath;
 public class Robinet extends Thread {
 
     private Baignoire baignoire;
-    private int volume;
+    private int volumeRemplissage;
 
     public Robinet(Baignoire baignoire, int volume) {
         this.baignoire = baignoire;
-        this.volume = volume;
+        this.volumeRemplissage = volume;
     }
 
     @Override
@@ -17,9 +17,8 @@ public class Robinet extends Thread {
 
     public void debite() {
 
-        while (this.baignoire.getVolume() < this.baignoire.getVolumeMax()){
-
-            this.baignoire.setVolume(this.baignoire.getVolume() + this.volume);
+        while (this.baignoire.getVolume() < this.baignoire.getVolumeMax()) {
+            this.baignoire.setVolume(this.baignoire.getVolume() + this.volumeRemplissage);
             System.out.println("Remplissage ! volume baignoire : " + this.baignoire.getVolume());
         }
 

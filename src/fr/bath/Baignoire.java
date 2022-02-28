@@ -20,10 +20,11 @@ public class Baignoire extends Thread {
 
     public void fuite(){
         while (this.volume > 0){
-            this.volume -= this.volumeFuite;
+            this.setVolume(this.getVolume() - this.volumeFuite);
             System.out.println("Fuite ! La baignoire est a : " + this.volume);
-
         }
+
+        System.out.println("Baignoire vide");
     }
 
     @Override
@@ -41,7 +42,6 @@ public class Baignoire extends Thread {
         } else {
             this.volume = volume;
         }
-
     }
 
     public int getVolumeMax() {
