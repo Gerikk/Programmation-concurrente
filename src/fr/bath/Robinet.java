@@ -18,8 +18,13 @@ public class Robinet extends Thread {
     public void debite() {
 
         while (this.baignoire.getVolume() < this.baignoire.getVolumeMax()) {
-            this.baignoire.setVolume(this.baignoire.getVolume() + this.volumeRemplissage);
-            System.out.println("Remplissage ! volume baignoire : " + this.baignoire.getVolume());
+
+            synchronized (this.baignoire){
+                this.baignoire.setVolume(this.baignoire.getVolume() + this.volumeRemplissage);
+                System.out.println("Remplissage ! volume baignoire : " + this.baignoire.getVolume());
+            }try {
+                sleep(1);
+            }catch (Exception e){}
         }
 
         System.out.println("Niveau final de la baignoire : ");

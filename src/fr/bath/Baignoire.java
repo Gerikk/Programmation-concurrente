@@ -20,10 +20,15 @@ public class Baignoire extends Thread {
 
     public void fuite(){
         while (this.volume > 0){
-            this.setVolume(this.getVolume() - this.volumeFuite);
-            System.out.println("Fuite ! La baignoire est a : " + this.volume);
-        }
+            synchronized (this){
+                this.setVolume(this.getVolume() - this.volumeFuite);
+                System.out.println("Fuite ! La baignoire est a : " + this.getVolume());
+            }
+            try {
+                sleep(1);
+            }catch (Exception e){}
 
+        }
         System.out.println("Baignoire vide");
     }
 
