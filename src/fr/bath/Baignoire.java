@@ -23,6 +23,9 @@ public class Baignoire extends Thread {
             synchronized (this){
                 this.setVolume(this.getVolume() - this.volumeFuite);
                 System.out.println("Fuite ! La baignoire est a : " + this.getVolume());
+                if(this.volume == 0){
+                    colmate();
+                }
             }
             try {
                 sleep(1);
@@ -30,6 +33,14 @@ public class Baignoire extends Thread {
 
         }
         System.out.println("Baignoire vide");
+    }
+
+    public void colmate(){
+        synchronized (this){
+            this.volumeFuite -= 1;
+            System.out.println("Fuite colmatée : " + this.volumeFuite);
+        }
+
     }
 
     @Override
