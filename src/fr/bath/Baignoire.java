@@ -1,16 +1,10 @@
 package fr.bath;
 
-public class Baignoire extends Thread {
+public class Baignoire implements Runnable {
 
     private final int volumeMax;
     private int volume;
     private int volumeFuite;
-
-    public Baignoire(int volumeMax) {
-        this.volumeMax = volumeMax;
-        this.volume = 0;
-        this.volumeFuite = 0;
-    }
 
     public Baignoire(int volumeMax, int volumeFuite) {
         this.volumeMax = volumeMax;
@@ -18,25 +12,30 @@ public class Baignoire extends Thread {
         this.volumeFuite = volumeFuite;
     }
 
-    public void fuite(){
-        while (this.volume > 0){
-            synchronized (this){
-                this.setVolume(this.getVolume() - this.volumeFuite);
-                System.out.println("Fuite ! La baignoire est a : " + this.getVolume());
-                if(this.volume == 0){
-                    colmate();
+    public void fuite() throws InterruptedException {
+        while (this.volume > 0) {
+            if (volume - volumeFuite < 0) {
+                volume = 0;
+            } else {
+                synchronized (this) {
+                    volume -= volumeFuite;
+                    System.out.println("Fuite ! La baignoire est a : " + volume);
+                    if (this.volume == 0) {
+                        colmate();
+                    }
                 }
             }
             try {
-                sleep(1);
-            }catch (Exception e){}
+                Thread.sleep(1);
+            } catch (Exception e) {
+            }
 
         }
         System.out.println("Baignoire vide");
     }
 
-    public void colmate(){
-        synchronized (this){
+    public void colmate() {
+        synchronized (this) {
             this.volumeFuite -= 1;
             System.out.println("Fuite colmatée : " + this.volumeFuite);
         }
@@ -45,7 +44,11 @@ public class Baignoire extends Thread {
 
     @Override
     public void run() {
-        fuite();
+        try {
+            fuite();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getVolume() {
@@ -53,11 +56,7 @@ public class Baignoire extends Thread {
     }
 
     public void setVolume(int volume) {
-        if (volume < 0 || volume > this.volumeMax) {
-            throw new IllegalArgumentException("Erreur !");
-        } else {
-            this.volume = volume;
-        }
+        this.volume = volume;
     }
 
     public int getVolumeMax() {
