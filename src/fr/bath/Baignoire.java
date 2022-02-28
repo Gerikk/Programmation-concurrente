@@ -1,6 +1,6 @@
 package fr.bath;
 
-public class Baignoire {
+public class Baignoire extends Thread {
 
     private final int volumeMax;
     private int volume;
@@ -20,11 +20,16 @@ public class Baignoire {
 
     public void fuite(){
         while (this.volume > 0){
-            this.volume = this.volume - this.volumeFuite;
+            this.volume -= this.volumeFuite;
             System.out.println("Fuite ! La baignoire est a : " + this.volume);
-        }
-    };
 
+        }
+    }
+
+    @Override
+    public void run() {
+        fuite();
+    }
 
     public int getVolume() {
         return volume;
