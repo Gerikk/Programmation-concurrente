@@ -15,19 +15,11 @@ public class Baignoire {
     }
 
     public void setVolume(int volume) {
-
-        try {
-            if(volume > this.volumeMax){
-                throw new Exception();
-            }else if(volume < 0){
-                throw new Exception();
-            }
-
+        if (volume < 0 || volume > this.volumeMax) {
+            throw new IllegalArgumentException("Erreur !");
+        } else {
             this.volume = volume;
-        }catch (Exception e){
-            System.out.println(e);
         }
-
 
     }
 
